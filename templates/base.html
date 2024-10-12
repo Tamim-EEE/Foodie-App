@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Foodie</title>
+    <meta name="description" content="Your description here">
+    {% load django_bootstrap5 %}
+    {% bootstrap_css %}
+    {% bootstrap_javascript %}
+    <style>
+        /* Adjust CSS as needed */
+        body {
+            padding-top:0 rem; /* Ensure content below header */
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container-fluid bg-dark text-white py-3">
+            <div class="row">
+                <div class="col">
+                    <h1 class="text-center">Welcome to Foodie</h1>
+                   <p> <h4 class="lead text-center"> <b> <i>Your favorite recipes at your fingertips </i> </b> </h4> </p>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <nav class="navbar navbar-expand-lg navbar-light bg-light sticky-top">
+        <div class="container-fluid">
+            <a class="navbar-brand ms-3" href="{% url 'foodie_app:index' %}">Home</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse justify-content-between" id="navbarNav">
+                <ul class="navbar-nav mt-3">
+                    <li class="nav-item ms-3">
+                        <a class="btn btn-outline-success mb-3" href="{% url 'foodie_app:add_recipe_no_genre' %}" style="color: black;">Add Recipe</a>
+                    </li>
+                    
+                    <li class="nav-item ms-3">
+                        <a class="btn btn-outline-success" href="{% url 'recipes:index' %}" style="color: black;">All Recipes</a>
+                    </li>
+                </ul>
+                <ul class="navbar-nav ms-3">
+                    {% if user.is_authenticated %}
+                    <li class="nav-item d-flex align-items-center">
+                        {% if user.profile.profile_photo %}
+                            <img src="{{user.profile.profile_photo.url}}"
+                              alt="Profile"   
+                              style="width:30px;
+                                     height:30px;
+                                     border-radius:50%;
+                                     margin-right:5px;">
+                        
+                        {% endif %}
+                        <span class="nav-link" style="color: black;">Welcome, 
+                            <a href="{% url 'accounts:edit_user_profile' %}" style="color: purple;" >{{ user.username }}</a>
+                        </span>
+                    </li>
+                    
+                        <li class="nav-item">
+                            <form class="d-inline" action="{% url 'accounts:logout' %}" method="post">
+                                {% csrf_token %}
+                                <button class="btn btn-outline-secondary btn-block border-2 border-dark mt-1" type="submit" >Logout</button>
+                            </form>
+                        </li>
+                    {% else %}
+
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'accounts:register' %}" style="color: black;">Register</a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'accounts:login' %}" style="color: black;">Login</a>
+                        </li>
+
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div id="content" class="container">
+        <div class="row">
+            <div class="col">
+                {% block content %}
+                {% endblock content %}
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer mt-auto py-3 bg-light">
+        <div class="container text-center">
+            <span class="text-muted"> 2024 Foodie - All Rights Reserved </span>
+        </div>
+    </footer>
+</body>
+</html>

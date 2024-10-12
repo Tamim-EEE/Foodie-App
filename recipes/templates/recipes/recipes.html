@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% load django_bootstrap5 %}
+
+{% block content %}
+
+<header>
+    <h2> All recipes are given below: </h2>
+    <hr>
+</header>
+<p>
+    <h4>
+       <a href="{% url "foodie_app:add_recipe_no_genre"%}" class="btn btn-primary btn-lg"> Add New Recipe </a>
+    </h4>
+ </p>
+
+<div class="container">
+    {% if recipes %}
+        <div>
+            {% for recipe in recipes %}
+                <div class="col mb-4 mx-auto" style="max-width: 720px;">
+                    <div class="card h-100">
+                        <div class="row g-0 h-100">
+                            <div class="col-4">
+                                {% if recipe.image %}
+                                    <img src="{{ recipe.image.url }}" class="img-fluid rounded shadow" alt="{{ recipe.name }}" style="object-fit: cover;">
+                                {% else %}
+                                    <img src="https://placehold.co/600?text=Recipe+Image&font=roboto" class="img-fluid rounded-start card-img" alt="{{ recipe.name }}" style="object-fit: cover;">
+                                {% endif %}
+                            </div>
+                            <div class="col-8 d-flex flex-column">
+                                <div class="card-body flex-grow-1">
+                                    <h5 class="card-title">{{ recipe.name }}</h5>
+                                    <p class="card-text">{{ recipe.description }}</p>
+                                </div>
+                                <div class="card-footer d-flex justify-content-between align-items-center">
+                                    <small><a href="{% url "recipes:recipe_details" recipe.id %}" class="btn btn-info btn-sm"> View Recipe Details </a></small>
+                                    <div class="d-flex align-items-center">
+                                        {% if recipe.user.profile.profile_photo %}
+                                            <img src="{{ recipe.user.profile.profile_photo.url }}" alt="Profile photo" class="rounded-circle" width="30" height="30">
+                                        {% endif %}
+                                        <strong class="ms-2"><small>Created By: {{ recipe.user.username }}</small></strong>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p>No recipes found.</p>
+    {% endif %}
+</div>
+
+{% endblock content %}

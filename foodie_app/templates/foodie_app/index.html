@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% load django_bootstrap5 %}
+{% block content %}
+   
+<div class="container">
+   <div>
+      <h2 class="display-4"><b>Foodie</b></h2> 
+      <hr>
+      <p class="text-break">
+         Foodie is an interactive website designed for culinary enthusiasts who want to explore new recipes and share their own creations. Users can browse a diverse collection of recipes, ranging from appetizers to desserts, and contribute their own recipes for others to enjoy. The site includes user authentication for a personalized experience, allowing members to save favorite recipes, manage their submissions, and interact with the community. With a user-friendly interface powered by Django and styled with Bootstrap 5, Foodie offers an engaging and seamless experience for discovering and sharing culinary delights.
+      </p>
+   </div>
+   <div>
+      <a href="{% url "foodie_app:add_category" %}" class="btn btn-outline-info btn-sm"><h5>Add Category</h5></a>
+   </div>
+   <h6 class="display-6">Trending Categories</h6>
+   <div class="container mt-4">
+      <div class="row">
+         {% for category in categories %}
+            <div class="col-sm-6 col-md-4 col-lg-3 mt-2 mb-4"> 
+               <a href="{% url "foodie_app:recipes" category.id %}" class="btn btn-outline-secondary">{{ category }}</a>
+            </div>
+         {% endfor %}
+      </div>
+   </div>
+</div>
+
+{% endblock content %}
